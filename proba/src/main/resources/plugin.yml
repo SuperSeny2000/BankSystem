@@ -1,0 +1,51 @@
+name: proba
+version: 'NEW_BANK_1.0'
+main: me.yourname.proba.proba
+api-version: '1.20'
+authors: [super_seny_2000]
+description: "ну чё погнали нахуй"
+website: "https://discord.gg/7YzyBS63Yu"
+
+commands:
+  bank:
+    aliases:
+      - b
+    usege: /bank [help|status|list|rpmode|add|remove|addfine|removefine|reload|addTreasury|sss|removecurrencyitem|removetreasury|addcurrencyitem]
+    description: "Личный кабинет."
+
+  avito:
+    aliases:
+      - av
+    usege: /avito
+    description: "Выставить товар на продажу."
+    permission: bankplugin.use
+
+  getbankblock:
+    aliases:
+      - gbb
+    usege: /getbankblock
+    description: "Банкомат блок."
+    permission: bankplugin.op
+
+  getfineblock:
+    aliases:
+      - gfb
+    usege: /getfineblock
+    description: "Штраф блок."
+    permission: bankplugin.op
+
+  createpricelist:
+    usage: /CreatePriceList
+    aliases:
+      - cpl
+    usege: /createpricelist
+    description: "Создаёт прайс лист."
+    permission: bankplugin.use
+
+permissions:
+  bankplugin.use:
+    description: "Команды для игроков."
+    default: true
+  bankplugin.op:
+    description: "Команды для админов."
+    default: op
