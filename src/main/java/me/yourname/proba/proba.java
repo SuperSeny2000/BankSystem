@@ -79,7 +79,7 @@ public class proba extends JavaPlugin {
                 getLogger().warning("§cОшибка: Веден не верный никнейм!!!");
             }
         }
-    }
+    } // маленький пенис
 
     @Override
     public void onDisable() {
