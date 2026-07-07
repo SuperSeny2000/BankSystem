@@ -86,6 +86,9 @@ public class proba extends JavaPlugin {
     // маленький пенис
     // маленький пенис
     // большой пенис
+    // средний пенис
+    // средний пенис
+    // средний пенис
 
     @Override
     public void onDisable() {
