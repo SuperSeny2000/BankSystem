@@ -14,6 +14,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class proba extends JavaPlugin {
 
+    // Изменить pom для публики
+
     private DataManager dataManager;
 
     @Override
@@ -79,16 +81,7 @@ public class proba extends JavaPlugin {
                 getLogger().warning("§cОшибка: Веден не верный никнейм!!!");
             }
         }
-    } // маленький пенис
-    // маленький пенис
-    // маленький пенис
-    // маленький пенис
-    // маленький пенис
-    // маленький пенис
-    // большой пенис
-    // средний пенис
-    // средний пенис
-    // средний пенис
+    }
 
     @Override
     public void onDisable() {

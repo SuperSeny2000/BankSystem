@@ -19,9 +19,6 @@ public class myself_class {
     public static UUID selectedPlayer = null;
     public static UUID selectedPlayerForFine = null;
 
-    public static String nameAcc1 ="Открыть счёт №1";
-    public static String nameAcc2 ="Открыть счёт №2";
-    public static String nameAcc3 ="Открыть счёт №3";
     public static boolean tr = true;
 
     public static void myself(Player player){
@@ -40,10 +37,7 @@ public class myself_class {
             if (treasuryName != null && !treasuryName.trim().isEmpty()) {
                 OfflinePlayer name = Bukkit.getOfflinePlayer(treasuryName);
                 selectedPlayerForFine = name.getUniqueId();
-            } else {
-                selectedPlayerForFine = player.getUniqueId();
-                player.sendMessage("§cКазна не установлена! Использую вас как казну.");
-            }
+            } else  {selectedPlayerForFine = player.getUniqueId();}
             int balance = dataManager.getBalance(selectedPlayer);
             updateMenuDisplay_class.updateMenuDisplay(fine_menu_class.remove_fine_menu, balance, amount, "remove_menu");
         } if (tr){

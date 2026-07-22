@@ -12,6 +12,8 @@ import org.bukkit.inventory.Inventory;
 
 public class avito_menu_class implements Listener {
 
+    // pepe
+
     public static Inventory avito_menu = Bukkit.createInventory(null, 9, Component.text("Авито"));
     public static Inventory buy_menu = Bukkit.createInventory(null, 54, Component.text("КУПИТЬ"));
 

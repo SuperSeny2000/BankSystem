@@ -101,7 +101,6 @@ public class bank_menu_class implements Listener {
     @EventHandler
     public void bank_menu_click(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
-        Inventory inv = event.getInventory();
         ItemStack xese = event.getCurrentItem();
         String currencyIt = dataManager.getCurrencyItem();
         Material mat = Material.matchMaterial(currencyIt);
@@ -109,7 +108,7 @@ public class bank_menu_class implements Listener {
         if (xese == null) return;
 
         // Основное меню
-        if (inv.equals(bank_menu)) {
+        if (event.getInventory().equals(bank_menu)) {
             resetState_class.resetState();
             if (event.getSlot() == 1) {list_richest_menu_class.list_richest_menu(player, 0, "pizda");}
             else if (event.getSlot() == 3) {
@@ -125,7 +124,7 @@ public class bank_menu_class implements Listener {
             event.setCancelled(true);
         }
         // Пополнить счёт
-        if (inv.equals(popolnit_menu)) {
+        if (event.getInventory().equals(popolnit_menu)) {
             event.setCancelled(true);
             int balance = dataManager.getBalance(myself_class.selectedPlayer);
             updateMenuDisplay_class.updateMenuDisplay(bank_menu_class.popolnit_menu, balance, amount, "popolnit");
@@ -148,7 +147,7 @@ public class bank_menu_class implements Listener {
             }
         }
         // Снять средства
-        if (inv.equals(snat_menu)) {
+        if (event.getInventory().equals(snat_menu)) {
             int balance = dataManager.getBalance(myself_class.selectedPlayer);
             event.setCancelled(true);
             if (event.getSlot() == 0) {player.openInventory(bank_menu);
@@ -175,7 +174,7 @@ public class bank_menu_class implements Listener {
             }
         }
         // pepe
-        if (inv.equals(addAcc_menu)) {
+        if (event.getInventory().equals(addAcc_menu)) {
             event.setCancelled(true);
             if (event.getSlot() == 0) {player.openInventory(bank_menu);
             } else if (event.getSlot() == 2 || event.getSlot() == 4 || event.getSlot() == 6) {
@@ -185,7 +184,7 @@ public class bank_menu_class implements Listener {
                 player.openInventory(currentAccMenu);
             } else if (event.getSlot() == 8) {open_vibor_menu_heads_class.open_vibor_menu_heads(player, 0, "addacc");}
         }
-        if (inv.equals(currentAccMenu)){
+        if (event.getInventory().equals(currentAccMenu)){
             event.setCancelled(true);
             if (event.getSlot() == 9){ player.openInventory(addAcc_menu);
             } else if (event.getSlot() == 2) {
@@ -204,7 +203,7 @@ public class bank_menu_class implements Listener {
             } else if (event.getSlot() == 17) {
                 closeMenyMess_class.closeMenyMess(player);
                 xuyInput.put(player.getUniqueId(), "create_new_acc");
-                currentAccMenu = current_Acc_menu(inv, true);
+                currentAccMenu = current_Acc_menu(event.getInventory(), true);
                 player.closeInventory();
                 player.openInventory(currentAccMenu);
             }

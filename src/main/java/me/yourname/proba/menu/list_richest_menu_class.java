@@ -24,20 +24,14 @@ public class list_richest_menu_class implements Listener {
     public static int currentPage2 = 0;
     private static String currentMenuType2 = "pizda";
 
-    // Пишет ник игрока
-    private static ItemStack NamePlayerHead(String playerName) {
-        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta meta = (SkullMeta) head.getItemMeta();
-        meta.setOwner(playerName);
-        meta.setDisplayName("§a" + playerName);
-        head.setItemMeta(meta);
-        return head;
-    }
-
     // очищает и ставит головы
     private static void menu_heads(Inventory inv, List<String> playersOnPage) {
-        for (int i = 1; i < 6; i++) {inv.setItem(i, null);}
-        for (int i = 0; i < playersOnPage.size() && i < 6; i++) {inv.setItem(i + 1, NamePlayerHead(playersOnPage.get(i)));}
+        for (int i = 1; i <= 6; i++) {inv.setItem(i, null);}
+        for (int i = 0; i < playersOnPage.size() && i < 5; i++) {inv.setItem(i + 2, createButt_class.createButt(
+                Material.PLAYER_HEAD,
+                playersOnPage.get(i),
+                "Баланс: " + dataManager.getBalance(Bukkit.getOfflinePlayer(playersOnPage.get(i)).getUniqueId())
+        ));}
     }
 
     // открывает и настраивает меню выбора игрока
@@ -49,6 +43,13 @@ public class list_richest_menu_class implements Listener {
         Inventory inv = Bukkit.createInventory(null, 9, Component.text(title));
 
         List<String> allPlayers = dataManager.getAllPlayers();
+
+        // сортировка
+        allPlayers.sort((p1, p2) -> Integer.compare(
+                dataManager.getBalance(Bukkit.getOfflinePlayer(p2).getUniqueId()),
+                dataManager.getBalance(Bukkit.getOfflinePlayer(p1).getUniqueId())
+        ));
+
         int totalPages = (int) Math.ceil(allPlayers.size() / 7.0);
         int start = page * 7;
         int end = Math.min(start + 7, allPlayers.size());
@@ -58,12 +59,10 @@ public class list_richest_menu_class implements Listener {
 
         inv.setItem(0, createButt_class.createButt(Material.ARROW, "Назад", ""));
 
-        if (page > 0) {
-            inv.setItem(7, createButt_class.createButt(Material.ARROW, "Предыдущая стр.", ""));
-        }
-        if (page < totalPages - 1) {
-            inv.setItem(8, createButt_class.createButt(Material.ARROW, "Следующая стр.", ""));
-        }
+        if (page > 0) {inv.setItem(7, createButt_class.createButt(Material.ARROW, "Предыдущая стр.", ""));}
+        if (page < totalPages - 1) {inv.setItem(8, createButt_class.createButt(Material.ARROW, "Следующая стр.", ""));}
+
+        for (int i = 0; i < 8; i++) {if (inv.getItem(i) == null) {inv.setItem(i, createButt_class.createButt(Material.GRAY_STAINED_GLASS_PANE, " ", " "));}}
 
         /*
         // Заполняем пустые слоты нижнего ряда серыми панелями

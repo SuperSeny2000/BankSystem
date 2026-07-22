@@ -83,6 +83,8 @@ public class fine_menu_class implements Listener {
                     }
                     player.openInventory(fine_menu_class.give_fine_menu);
                 } else if (event.getSlot() == 4) {
+                    String treasuryName = dataManager.getTreasuryAccount();
+                    if (treasuryName == null || treasuryName.trim().isEmpty()) {player.sendMessage("§cКазна не установлена! Использую вас как казну.");}
                     myself_class.myself(player);
                     player.openInventory(fine_menu_class.remove_fine_menu);
                 } else if (event.getSlot() == 6) {

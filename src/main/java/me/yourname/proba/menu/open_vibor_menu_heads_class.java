@@ -43,12 +43,8 @@ public class open_vibor_menu_heads_class implements Listener {
 
     // очищает и ставит головы
     private static void vibor_menu_heads(Inventory inv, List<String> playersOnPage) {
-        for (int i = 0; i < 45; i++) {
-            inv.setItem(i, null);
-        }
-        for (int i = 0; i < playersOnPage.size() && i < 45; i++) {
-            inv.setItem(i, NamePlayerHead(playersOnPage.get(i)));
-        }
+        for (int i = 0; i < 45; i++) {inv.setItem(i, null);}
+        for (int i = 0; i < playersOnPage.size() && i < 45; i++) {inv.setItem(i, NamePlayerHead(playersOnPage.get(i)));}
     }
 
     // открывает и настраивает меню выбора игрока
