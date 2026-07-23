@@ -36,7 +36,7 @@ public class PlayerChatMess implements Listener {
         PlayerChatMess.message1 = event.getMessage();
         // Обновляем меню и открываем его (в синхронном потоке)
         UUID targetPlayer = myself_class.selectedPlayer;
-        int balance = dataManager.getBalance(targetPlayer);
+        int balance = dataManager.getBalance(targetPlayer, 0);
 
         Bukkit.getScheduler().runTask(plugin, () -> {
             // Обрабатываем только случай ввода причины
@@ -49,21 +49,18 @@ public class PlayerChatMess implements Listener {
                 player.openInventory(bank_menu_class.addAcc_menu);
                 player.sendMessage("Вы вписали причину: " + PlayerChatMess.message1);
             } else if (action.equals("create_new_acc")) {
-            UUID target = myself_class.selectedPlayer;
-            boolean success = dataManager.addAcc(target, PlayerChatMess.message1);
+                UUID target = myself_class.selectedPlayer;
+                boolean success = dataManager.addAcc(target, PlayerChatMess.message1);
 
-            Bukkit.getScheduler().runTask(plugin, () -> {
-                if (success) {
-                    player.sendMessage("§aСчёт \"" + PlayerChatMess.message1 + "\" успешно создан!");
-                    // Обновляем меню addAcc_menu
-                    updateMenuDisplay_class.updateAddAccMenuWithRealNames(target, bank_menu_class.addAcc_menu);
-                } else {
-                    player.sendMessage("§cНе удалось создать счёт (максимум 3).");
-                }
-                player.openInventory(bank_menu_class.addAcc_menu);
-            });
-            xuyInput.remove(uuid);
-        }
+                Bukkit.getScheduler().runTask(plugin, () -> {
+                    if (success) {
+                        player.sendMessage("§aСчёт \"" + PlayerChatMess.message1 + "\" успешно создан!");
+                        updateMenuDisplay_class.updateAddAccMenuWithRealNames(target, bank_menu_class.addAcc_menu);
+                    } else {player.sendMessage("§cНе удалось создать счёт (максимум 3).");}
+                    player.openInventory(bank_menu_class.addAcc_menu);
+                });
+                xuyInput.remove(uuid);
+            }
         });
         xuyInput.remove(uuid);
     }

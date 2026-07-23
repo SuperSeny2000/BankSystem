@@ -30,7 +30,7 @@ public class list_richest_menu_class implements Listener {
         for (int i = 0; i < playersOnPage.size() && i < 5; i++) {inv.setItem(i + 2, createButt_class.createButt(
                 Material.PLAYER_HEAD,
                 playersOnPage.get(i),
-                "Баланс: " + dataManager.getBalance(Bukkit.getOfflinePlayer(playersOnPage.get(i)).getUniqueId())
+                "Баланс: " + dataManager.getBalance(Bukkit.getOfflinePlayer(playersOnPage.get(i)).getUniqueId(), 0)
         ));}
     }
 
@@ -46,8 +46,8 @@ public class list_richest_menu_class implements Listener {
 
         // сортировка
         allPlayers.sort((p1, p2) -> Integer.compare(
-                dataManager.getBalance(Bukkit.getOfflinePlayer(p2).getUniqueId()),
-                dataManager.getBalance(Bukkit.getOfflinePlayer(p1).getUniqueId())
+                dataManager.getBalance(Bukkit.getOfflinePlayer(p2).getUniqueId(), 0),
+                dataManager.getBalance(Bukkit.getOfflinePlayer(p1).getUniqueId(), 0)
         ));
 
         int totalPages = (int) Math.ceil(allPlayers.size() / 7.0);
@@ -102,7 +102,7 @@ public class list_richest_menu_class implements Listener {
             if (owner != null) {
                 UUID uuid = Bukkit.getOfflinePlayer(owner).getUniqueId();
                 myself_class.selectedPlayer = uuid;
-                int balance = dataManager.getBalance(myself_class.selectedPlayer);
+                int balance = dataManager.getBalance(myself_class.selectedPlayer, 0);
                 if (currentMenuType2.equals("pizda")) {
                     dataManager.printFines(uuid, player);
                     list_richest_menu(player, 0, "pizda");

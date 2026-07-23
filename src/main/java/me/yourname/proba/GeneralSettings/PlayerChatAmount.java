@@ -66,8 +66,8 @@ public class PlayerChatAmount implements Listener {
         // Сохраняем введённую сумму в статическую переменную
         amount = enteredAmount;
         String playerName = Bukkit.getOfflinePlayer(targetPlayer).getName();
-        int balance = dataManager.getBalance(targetPlayer);
-        int myBalance = dataManager.getBalance(player.getUniqueId());
+        int balance = dataManager.getBalance(targetPlayer, 0);
+        int myBalance = dataManager.getBalance(player.getUniqueId(), 0);
         Bukkit.getScheduler().runTask(plugin, () -> {
             if (action.equals("popolnit")) {
                 updateMenuDisplay_class.updateMenuDisplay(bank_menu_class.popolnit_menu, balance, amount, "popolnit");

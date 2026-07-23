@@ -115,15 +115,19 @@ public class DataManager implements Listener {
         if (atmList.contains(serialized)) {
             if (getRPmode()) {
                 List<String> allowed = getAllowedPlayers();
-                if (!allowed.contains(player.getName())) {player.sendMessage("Не в списке");}
-                return;
+                if (!allowed.contains(player.getName())) {
+                    player.sendMessage("Не в списке");
+                    return;
+                }
             }
             event.getPlayer().openInventory(bank_menu);
         } else if (fineList.contains(serialized)) {
             if (getRPmode()) {
                 List<String> allowed = getFineAllowedPlayers();
-                if (!allowed.contains(player.getName())) {player.sendMessage("Не в списке");}
-                return;
+                if (!allowed.contains(player.getName())) {
+                    player.sendMessage("Не в списке");
+                    return;
+                }
             }
             event.getPlayer().openInventory(fine_menu);
         }
@@ -205,7 +209,13 @@ public class DataManager implements Listener {
     }
     // Устанавливает банкиров
     public void setAllowedPlayers(String name) {
-        configConfig.set("allowed-players", name);
+        List<String> list = configConfig.getStringList("allowed-players");
+
+        if (!list.contains(name)) {
+            list.add(name);
+        }
+
+        configConfig.set("allowed-players", list);
         save(configConfig, configFile);
     }
     // Устанавливает судей
@@ -214,13 +224,15 @@ public class DataManager implements Listener {
         save(configConfig, configFile);
     }
     // Установить баланс
-    public void setBalance(UUID uuid, double amount) {
-        ConfigurationSection section = getPlayerSection(uuid);
-        if (uuid == null) {plugin.getLogger().warning("section = null");}
-        if (section != null) {
-            section.set("balance", amount);
-            save(playerDataConfig, playerDataFile);
-        } else {plugin.getLogger().warning("Секция для UUID " + uuid + " не найдена");}
+    public void setBalance(UUID uuid, int amount, int accIndex) {
+        ConfigurationSection accounts = getAccountsSection(uuid);
+
+        if (accounts == null) {plugin.getLogger().warning("section = null");}
+
+        ConfigurationSection account = accounts.getConfigurationSection(String.valueOf(accIndex));
+
+        account.set("balance", amount);
+        save(playerDataConfig, playerDataFile);
     }
     // Устанавливает валюту
     public void setCurrencyItem(String item) {
@@ -247,22 +259,15 @@ public class DataManager implements Listener {
     // Выводит рп мод
     public boolean getRPmode() {return configConfig.getBoolean("RP-MODE", false);}
     // Получить баланс
-    public int getBalance(UUID uuid) {
-        if (uuid == null) {
-            plugin.getLogger().warning("getBalance вызван с null UUID");
-            return 0;
-        }
-        ConfigurationSection players = playerDataConfig.getConfigurationSection("players");
-        if (players == null) {
-            plugin.getLogger().warning("Секция 'players' отсутствует в playerdata.yml");
-            return 0;
-        }
-        ConfigurationSection section = players.getConfigurationSection(uuid.toString());
-        if (section == null) {
-            plugin.getLogger().warning("Секция для UUID " + uuid + " не найдена");
-            return 0;
-        }
-        int balance = section.getInt("balance", 0);
+    public int getBalance(UUID uuid, int accIndex) {
+        ConfigurationSection accounts = getAccountsSection(uuid);
+
+        if (accounts == null) {plugin.getLogger().warning("section = null");}
+
+        ConfigurationSection account = accounts.getConfigurationSection(String.valueOf(accIndex));
+
+
+        int balance = account.getInt("balance", 0);
         plugin.getLogger().info("Баланс для " + uuid + " = " + balance);
         return balance;
     }
@@ -301,7 +306,7 @@ public class DataManager implements Listener {
             ConfigurationSection playerSection = playersSection.createSection(uuidStr);
             playerSection.set("nickname", Bukkit.getOfflinePlayer(uuid).getName());
             playerSection.set("hasAccount", hasAcc);
-            playerSection.set("balance", 0);
+            //playerSection.set("balance", 0);
             //playerSection.set("mainAccount", -1);
             playerSection.createSection("accounts");
             save(playerDataConfig, playerDataFile);
@@ -319,16 +324,6 @@ public class DataManager implements Listener {
         if (uuid == null) return false;
         ConfigurationSection section = playerDataConfig.getConfigurationSection("players." + uuid + ".accounts");
         return section != null && !section.getKeys(false).isEmpty();
-    }
-
-    // Добавь в DataManager
-    public int getAccountCount(UUID uuid) {
-        ConfigurationSection section = playerDataConfig.getConfigurationSection("players." + uuid + ".accounts");
-        return section == null ? 0 : section.getKeys(false).size();
-    }
-
-    public boolean hasMaxAccounts(UUID uuid) {
-        return getAccountCount(uuid) >= 3;
     }
 
     // Создаёт аккаунт
@@ -358,6 +353,62 @@ public class DataManager implements Listener {
         save(playerDataConfig, playerDataFile);
         return true;
     }
+
+    public boolean deleteAcc(UUID uuid, int accIndex){
+        ConfigurationSection accounts = getAccountsSection(uuid);
+        String path = String.valueOf(accIndex);
+        accounts.set(path, null);
+        save(playerDataConfig, playerDataFile);
+        return true;
+    }
+
+    public boolean addPlayersOnMyAcc(){
+
+        return true;
+    }
+
+    public boolean removePlayersOnMyAcc(){
+
+        return true;
+    }
+
+    public ArrayList<String> printListPlayersOnMyAcc(){
+
+        return new ArrayList<>();
+    }
+
+
+
+
+    // Главный счёт игрока
+    public int getMainAccount(UUID uuid) {
+        ConfigurationSection player = playerDataConfig.getConfigurationSection("players." + uuid);
+        if (player == null) return 0;
+        return player.getInt("mainAccount", 0);
+    }
+
+    // Имя счёта
+    public String getAccountName(UUID uuid, int accIndex) {
+        ConfigurationSection acc = playerDataConfig.getConfigurationSection(
+                "players." + uuid + ".accounts." + accIndex
+        );
+
+        if (acc == null) return "Счёт #" + (accIndex + 1);
+        return acc.getString("name", "Счёт #" + (accIndex + 1));
+    }
+
+    // Количество счетов
+    public int getAccountsCount(UUID uuid) {
+        ConfigurationSection accounts = getAccountsSection(uuid);
+        if (accounts == null) return 0;
+        return accounts.getKeys(false).size();
+    }
+
+
+
+
+
+
     // Проверяет заход игрока на сервер
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {

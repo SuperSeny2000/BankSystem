@@ -136,6 +136,10 @@ public class bank_help implements CommandExecutor, TabCompleter {
                     Player player1 = (Player) commandSender;
                     //dataManager.printFines(player1.getUniqueId());
                     //dataManager.removeFinePlayer(player1.getUniqueId());
+
+
+
+
                     return true;
                 default:
                     commandSender.sendMessage("хз чё за команда");

@@ -17,12 +17,15 @@ public class updateMenuDisplay_class {
 
     public static void updateMenuDisplay(Inventory menu, int balance, int amount, String menu1) {
         String playerName = Bukkit.getOfflinePlayer(myself_class.selectedPlayer).getName();
+        int mainAcc = dataManager.getMainAccount(myself_class.selectedPlayer);
+        String accName = dataManager.getAccountName(myself_class.selectedPlayer, mainAcc);
+        int accBalance = dataManager.getBalance(myself_class.selectedPlayer, mainAcc);
 
         if (menu1.equals("popolnit")) {
             int after = balance + amount;
             menu.setItem(2, createButt_class.createButt(Material.PLAYER_HEAD, "Выбрать игрока", "Текущий выбор: " + playerName));
             if (amount <= 0) {
-                menu.setItem(4, createButt_class.createButt(Material.GOLD_INGOT, "Баланс счёта5 ___", "Название " + null + "\nБаланс: " + balance + "\nПосле пополнения: сумма не выбрана"));
+                menu.setItem(4, createButt_class.createButt(Material.GOLD_INGOT, "Счёт №" + (mainAcc + 1), "Название: " + accName + "\n" + "Баланс: " + accBalance + "\n" + "Основной счёт игрока"));
                 menu.setItem(8, createButt_class.createButt(Material.BARRIER, "Выберите сумму11", "Сначала выберите сумму для пополнения."));
             } else {
                 menu.setItem(4, createButt_class.createButt(Material.GOLD_INGOT, "Баланс счёта6", "Название " + null + "\nБаланс: " + balance + "\nПосле пополнения: " + after));
@@ -89,8 +92,8 @@ public class updateMenuDisplay_class {
             if (accounts.contains("2")) name3 = accounts.getString("2.name", name3);
         }
 
-        menu.setItem(2, createButt_class.createButt(Material.EMERALD_BLOCK, name1, ""));
-        menu.setItem(4, createButt_class.createButt(Material.REDSTONE_BLOCK, name2, ""));
-        menu.setItem(6, createButt_class.createButt(Material.GOLD_BLOCK, name3, ""));
+        menu.setItem(2, createButt_class.createButt(Material.EMERALD_BLOCK, name1, "Счёт №1 \nБаланс: " ));
+        menu.setItem(4, createButt_class.createButt(Material.REDSTONE_BLOCK, name2, "Счёт №2 \nБаланс: " ));
+        menu.setItem(6, createButt_class.createButt(Material.GOLD_BLOCK, name3, "Счёт №3 \nБаланс: " ));
     }
 }

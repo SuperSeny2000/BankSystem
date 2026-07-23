@@ -122,9 +122,9 @@ public class fine_menu_class implements Listener {
             event.setCancelled(true);
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(selectedPlayerForFine);
             UUID uuidTreasury = offlinePlayer.getUniqueId();
-            int balanceTreasury = dataManager.getBalance(uuidTreasury);
+            int balanceTreasury = dataManager.getBalance(uuidTreasury, 0);
             if (event.getCurrentItem() != null) {
-                int balance = dataManager.getBalance(myself_class.selectedPlayer);
+                int balance = dataManager.getBalance(myself_class.selectedPlayer, 0);
                 if (event.getSlot() == 0) {open_vibor_menu_heads_class.open_vibor_menu_heads(player, 0, "remove_fine");
                 } else if (event.getSlot() == 18) {player.openInventory(fine_menu_class.fine_menu);
                 } else if (event.getSlot() == 11) {open_vibor_menu_heads_class.open_vibor_menu_heads(player, 0, "remove_fine_perevesti");
@@ -144,10 +144,10 @@ public class fine_menu_class implements Listener {
                     }
                     if (nal_bezNal){
                         removeItems_class.removeItems(player, amount, currencyStack);
-                        dataManager.setBalance(uuidTreasury, balanceTreasury + amount);
+                        dataManager.setBalance(uuidTreasury, balanceTreasury + amount, 0);
                     } else {
-                        dataManager.setBalance(uuidTreasury, balanceTreasury + amount);
-                        dataManager.setBalance(player.getUniqueId(), balance - amount);
+                        dataManager.setBalance(uuidTreasury, balanceTreasury + amount, 0);
+                        dataManager.setBalance(player.getUniqueId(), balance - amount, 0);
                     }
                     dataManager.removeFinePlayer(selectedPlayer, PlayerChatAmount.fineIndex);
                     player.closeInventory();

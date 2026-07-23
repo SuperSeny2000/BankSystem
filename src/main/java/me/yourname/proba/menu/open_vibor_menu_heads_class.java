@@ -31,20 +31,10 @@ public class open_vibor_menu_heads_class implements Listener {
     public static int currentPage = 0;
     private static String currentMenuType = "po";
 
-    // Пишет ник игрока
-    private static ItemStack NamePlayerHead(String playerName) {
-        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta meta = (SkullMeta) head.getItemMeta();
-        meta.setOwner(playerName);
-        meta.setDisplayName("§a" + playerName);
-        head.setItemMeta(meta);
-        return head;
-    }
-
     // очищает и ставит головы
     private static void vibor_menu_heads(Inventory inv, List<String> playersOnPage) {
         for (int i = 0; i < 45; i++) {inv.setItem(i, null);}
-        for (int i = 0; i < playersOnPage.size() && i < 45; i++) {inv.setItem(i, NamePlayerHead(playersOnPage.get(i)));}
+        for (int i = 0; i < playersOnPage.size() && i < 45; i++) {inv.setItem(i, createButt_class.createButt(Material.PLAYER_HEAD, playersOnPage.get(i), "Онлине??"));}
     }
 
     // открывает и настраивает меню выбора игрока
@@ -110,7 +100,7 @@ public class open_vibor_menu_heads_class implements Listener {
             if (owner != null) {
                 UUID uuid = Bukkit.getOfflinePlayer(owner).getUniqueId();
                 myself_class.selectedPlayer = uuid;
-                int balance = dataManager.getBalance(myself_class.selectedPlayer);
+                int balance = dataManager.getBalance(myself_class.selectedPlayer, 0);
                 if (currentMenuType.equals("po")) {
                     updateMenuDisplay_class.updateMenuDisplay(bank_menu_class.popolnit_menu, balance, amount, "popolnit");
                     player.openInventory(popolnit_menu);
@@ -118,7 +108,7 @@ public class open_vibor_menu_heads_class implements Listener {
                     updateMenuDisplay_class.updateMenuDisplay(bank_menu_class.snat_menu, balance, amount, "snat");
                     player.openInventory(snat_menu);
                 } else if (currentMenuType.equals("pere")){
-                    int senderBalance = dataManager.getBalance(player.getUniqueId());
+                    int senderBalance = dataManager.getBalance(player.getUniqueId(), 0);
                     updateMenuDisplay_class.updateMenuDisplay(perevod_menu, senderBalance, amount, "snat");
                     player.openInventory(perevod_menu);
                 } else if (currentMenuType.equals("give_fine")){

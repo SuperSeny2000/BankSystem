@@ -66,7 +66,7 @@ public class bankMe_menu_class implements Listener {
             resetState_class.resetState();
             if (event.getCurrentItem() != null){
                 if (event.getSlot() == 1){
-                    int balance = dataManager.getBalance(uuid);
+                    int balance = dataManager.getBalance(uuid, 0);
                     player.sendMessage("Ваш баланс " + balance);
                     player.closeInventory();
                 }
@@ -90,7 +90,7 @@ public class bankMe_menu_class implements Listener {
         // перевод меню
         if (event.getInventory().equals(perevod_menu)){
             event.setCancelled(true);
-            int balance = dataManager.getBalance(myself_class.selectedPlayer);
+            int balance = dataManager.getBalance(myself_class.selectedPlayer, 0);
             if (event.getCurrentItem() != null){
                 if (event.getSlot() == 0){player.openInventory(bankMe_menu);}
                 else if(event.getSlot() == 2){open_vibor_menu_heads_class.open_vibor_menu_heads(player, 0, "pere");}
@@ -100,13 +100,13 @@ public class bankMe_menu_class implements Listener {
                     pendingInput.put(player.getUniqueId(), "pere");
                 }
                 else if(event.getSlot() == 8){
-                    int myBalance = dataManager.getBalance(player.getUniqueId());
+                    int myBalance = dataManager.getBalance(player.getUniqueId(), 0);
                     if (selectedPlayer == uuid || amount == 0){player.sendMessage("себя нельзя выбрать или не выбрали сумму");
                     } else {
                         if (amount > myBalance){player.sendMessage("недостаточно");
                         } else {
-                            dataManager.setBalance(myself_class.selectedPlayer, balance + PlayerChatAmount.amount);
-                            dataManager.setBalance(player.getUniqueId(), myBalance - PlayerChatAmount.amount);
+                            dataManager.setBalance(myself_class.selectedPlayer, balance + PlayerChatAmount.amount, 0);
+                            dataManager.setBalance(player.getUniqueId(), myBalance - PlayerChatAmount.amount, 0);
                             player.sendMessage("всё гуд");
                             player.closeInventory();
                         }
@@ -119,7 +119,7 @@ public class bankMe_menu_class implements Listener {
             event.setCancelled(true);
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(treasuryAccount);
             UUID uuidTreasury = offlinePlayer.getUniqueId();
-            int balanceTreasury = dataManager.getBalance(uuidTreasury);
+            int balanceTreasury = dataManager.getBalance(uuidTreasury, 0);
             if (event.getCurrentItem() != null){
                 if (event.getSlot() == 0){player.openInventory(bankMe_menu);
                 } else if(event.getSlot() == 4){player.sendMessage("Вы нажали кнопку");
@@ -127,13 +127,13 @@ public class bankMe_menu_class implements Listener {
                     closeMenyMess_class.closeMenyMess(player);
                     pendingInput.put(player.getUniqueId(), "pojer");
                 } else if(event.getSlot() == 8){
-                    int myBalance = dataManager.getBalance(player.getUniqueId());
+                    int myBalance = dataManager.getBalance(player.getUniqueId(), 0);
                     if (amount == 0){player.sendMessage("не выбрали сумму");
                     } else {
                         if (amount > myBalance){player.sendMessage("недостаточно");
                         } else {
-                            dataManager.setBalance(player.getUniqueId(), myBalance - PlayerChatAmount.amount);
-                            dataManager.setBalance(uuidTreasury, balanceTreasury + PlayerChatAmount.amount);
+                            dataManager.setBalance(player.getUniqueId(), myBalance - PlayerChatAmount.amount, 0);
+                            dataManager.setBalance(uuidTreasury, balanceTreasury + PlayerChatAmount.amount, 0);
                             player.sendMessage("всё гуд");
                             player.closeInventory();
                         }

@@ -15,6 +15,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
 import java.util.UUID;
 
 import static me.yourname.proba.GeneralSettings.PlayerChatAmount.amount;
@@ -126,7 +127,7 @@ public class bank_menu_class implements Listener {
         // Пополнить счёт
         if (event.getInventory().equals(popolnit_menu)) {
             event.setCancelled(true);
-            int balance = dataManager.getBalance(myself_class.selectedPlayer);
+            int balance = dataManager.getBalance(myself_class.selectedPlayer, 0);
             updateMenuDisplay_class.updateMenuDisplay(bank_menu_class.popolnit_menu, balance, amount, "popolnit");
             if (event.getSlot() == 0) {player.openInventory(bank_menu);
             } else if (event.getSlot() == 2) {open_vibor_menu_heads_class.open_vibor_menu_heads(player, 0, "po");
@@ -139,7 +140,7 @@ public class bank_menu_class implements Listener {
                 } else {
                     if (!player.getInventory().containsAtLeast(currencyStack, PlayerChatAmount.amount)) {player.sendMessage("Вам нужно " + PlayerChatAmount.amount + " " + currencyStack);
                     } else {
-                        dataManager.setBalance(myself_class.selectedPlayer, PlayerChatAmount.amount + balance);
+                        dataManager.setBalance(myself_class.selectedPlayer, PlayerChatAmount.amount + balance, 0);
                         removeItems_class.removeItems(player, PlayerChatAmount.amount, currencyStack);
                         player.closeInventory();
                     }
@@ -148,13 +149,17 @@ public class bank_menu_class implements Listener {
         }
         // Снять средства
         if (event.getInventory().equals(snat_menu)) {
-            int balance = dataManager.getBalance(myself_class.selectedPlayer);
+            int balance = dataManager.getBalance(myself_class.selectedPlayer, 0);
             event.setCancelled(true);
             if (event.getSlot() == 0) {player.openInventory(bank_menu);
             } else if (event.getSlot() == 2) {
-                if (!(dataManager.getRPmode())){
-                    player.sendMessage("рп мод фалзе нельзя ");
-                    return;
+                if (!(dataManager.getRPmode())) {
+                    List<String> list = dataManager.getAllowedPlayers();
+
+                    if (list.stream().noneMatch(name -> name.equalsIgnoreCase(player.getName()))) {
+                        player.sendMessage("Вы не можете пользоваться этой кнопкой.");
+                        return;
+                    }
                 }
                 open_vibor_menu_heads_class.open_vibor_menu_heads(player, 0, "sna");
             } else if(event.getSlot() == 4){player.sendMessage("Вы нажали кнопку");
@@ -166,7 +171,7 @@ public class bank_menu_class implements Listener {
                 } else {
                     if (amount > balance){player.sendMessage("недостаточно");
                     } else {
-                        dataManager.setBalance(myself_class.selectedPlayer, balance - PlayerChatAmount.amount);
+                        dataManager.setBalance(myself_class.selectedPlayer, balance - PlayerChatAmount.amount, 0);
                         addItems(player, PlayerChatAmount.amount, currencyStack);
                         player.closeInventory();
                     }
