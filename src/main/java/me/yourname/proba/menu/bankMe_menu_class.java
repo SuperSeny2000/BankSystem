@@ -72,6 +72,11 @@ public class bankMe_menu_class implements Listener {
                 }
                 else if(event.getSlot() == 3){
                     myself(player);
+                    if (!(dataManager.hasAnyAccount(uuid))){
+                        //player.closeInventory();
+                        player.sendMessage("У тебя нет счёта");
+                        //return;
+                    }
                     player.openInventory(perevod_menu);
                 }
                 else if(event.getSlot() == 5){

@@ -227,9 +227,17 @@ public class DataManager implements Listener {
     public void setBalance(UUID uuid, int amount, int accIndex) {
         ConfigurationSection accounts = getAccountsSection(uuid);
 
-        if (accounts == null) {plugin.getLogger().warning("section = null");}
+        if (accounts == null) {
+            plugin.getLogger().warning("section = null");
+            return;
+        }
 
         ConfigurationSection account = accounts.getConfigurationSection(String.valueOf(accIndex));
+
+        if(account == null){
+            plugin.getLogger().warning("У игрока нет аккаунта");
+            return;
+        }
 
         account.set("balance", amount);
         save(playerDataConfig, playerDataFile);
@@ -261,11 +269,20 @@ public class DataManager implements Listener {
     // Получить баланс
     public int getBalance(UUID uuid, int accIndex) {
         ConfigurationSection accounts = getAccountsSection(uuid);
+        Player player = Bukkit.getPlayer(uuid);
 
-        if (accounts == null) {plugin.getLogger().warning("section = null");}
+        if (accounts == null) {
+            plugin.getLogger().warning("section = null");
+            return 0;
+        }
 
         ConfigurationSection account = accounts.getConfigurationSection(String.valueOf(accIndex));
 
+        if (account == null){
+            player.sendMessage("У тебя нет банковского счёта");
+            plugin.getLogger().warning("У игрока нет счёта");
+            return 0;
+        }
 
         int balance = account.getInt("balance", 0);
         plugin.getLogger().info("Баланс для " + uuid + " = " + balance);

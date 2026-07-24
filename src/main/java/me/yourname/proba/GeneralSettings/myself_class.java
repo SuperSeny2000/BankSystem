@@ -24,7 +24,9 @@ public class myself_class {
     public static void myself(Player player){
         if (selectedPlayer == null){
             selectedPlayer = player.getUniqueId();
-            int balance = dataManager.getBalance(selectedPlayer, 0);
+            int balance = 0;
+            if (dataManager.hasAnyAccount(selectedPlayer)){balance = dataManager.getBalance(selectedPlayer, 0);}
+
             updateMenuDisplay_class.updateMenuDisplay(bank_menu_class.popolnit_menu, balance, amount, "popolnit");
             updateMenuDisplay_class.updateMenuDisplay(bank_menu_class.snat_menu, balance, amount, "snat");
             updateMenuDisplay_class.updateMenuDisplay(bankMe_menu_class.perevod_menu, balance, amount, "perevod");

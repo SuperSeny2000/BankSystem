@@ -133,6 +133,7 @@ public class bank_menu_class implements Listener {
             } else if (event.getSlot() == 2) {open_vibor_menu_heads_class.open_vibor_menu_heads(player, 0, "po");
             } else if(event.getSlot() == 4){player.sendMessage("Вы нажали кнопку");
             } else if (event.getSlot() == 6) {
+
                 closeMenyMess_class.closeMenyMess(player);
                 pendingInput.put(player.getUniqueId(), "popolnit");
             } else if (event.getSlot() == 8){

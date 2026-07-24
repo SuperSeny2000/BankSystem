@@ -25,19 +25,29 @@ public class updateMenuDisplay_class {
             int after = balance + amount;
             menu.setItem(2, createButt_class.createButt(Material.PLAYER_HEAD, "Выбрать игрока", "Текущий выбор: " + playerName));
             if (amount <= 0) {
-                menu.setItem(4, createButt_class.createButt(Material.GOLD_INGOT, "Счёт №" + (mainAcc + 1), "Название: " + accName + "\n" + "Баланс: " + accBalance + "\n" + "Основной счёт игрока"));
-                menu.setItem(8, createButt_class.createButt(Material.BARRIER, "Выберите сумму11", "Сначала выберите сумму для пополнения."));
+                if (!(dataManager.hasAnyAccount(myself_class.selectedPlayer))){
+                    menu.setItem(4, createButt_class.createButt(Material.GOLD_INGOT, "Счёт не найден", "У игрока нет банковского счёта"));
+                    menu.setItem(8, createButt_class.createButt(Material.BARRIER, "Выберите сумму11", "Сначала выберите сумму для пополнения."));
+                } else {
+                    menu.setItem(4, createButt_class.createButt(Material.GOLD_INGOT, "Счёт №" + (mainAcc + 1), "Название: " + accName + "\n" + "Баланс: " + accBalance + "\n" + "Основной счёт игрока"));
+                    menu.setItem(8, createButt_class.createButt(Material.BARRIER, "Выберите сумму11", "Сначала выберите сумму для пополнения."));
+                }
             } else {
                 menu.setItem(4, createButt_class.createButt(Material.GOLD_INGOT, "Баланс счёта6", "Название " + null + "\nБаланс: " + balance + "\nПосле пополнения: " + after));
-                menu.setItem(8, createButt_class.createButt(Material.SLIME_BALL, "Подтвердить", "Нажми, чтобы подтвердить."));
+                menu.setItem(8, createButt_class.createButt(Material.SLIME_BALL, "Подтвердить", "Нажми, чтобы подтвердить пополнение."));
             }
         }
         else if (menu1.equals("snat")) {
             int after = balance - amount;
             menu.setItem(2, createButt_class.createButt(Material.PLAYER_HEAD, "Выбрать игрока", "Текущий выбор: " + playerName));
             if (amount <= 0) {
-                menu.setItem(4, createButt_class.createButt(Material.GOLD_INGOT, "Баланс счёта6 ___", "Название " + null + "\nБаланс: " + balance + "\nПосле снятия: сумма не выбрана"));
-                menu.setItem(8, createButt_class.createButt(Material.BARRIER, "Выберите сумму12", "Сначала выберите сумму для пополнения."));
+                if (!(dataManager.hasAnyAccount(myself_class.selectedPlayer))){
+                    menu.setItem(4, createButt_class.createButt(Material.GOLD_INGOT, "Счёт не найден", "У игрока нет банковского счёта"));
+                    menu.setItem(8, createButt_class.createButt(Material.BARRIER, "Выберите сумму11", "Сначала выберите сумму для пополнения."));
+                } else {
+                    menu.setItem(4, createButt_class.createButt(Material.GOLD_INGOT, "Баланс счёта6 ___", "Название " + null + "\nБаланс: " + balance + "\nПосле снятия: сумма не выбрана"));
+                    menu.setItem(8, createButt_class.createButt(Material.BARRIER, "Выберите сумму12", "Сначала выберите сумму для пополнения."));
+                }
             } else {
                 menu.setItem(4, createButt_class.createButt(Material.GOLD_INGOT, "Баланс счёта7", "Название " + null + "\nБаланс: " + balance + "\nПосле снятия: " + after));
                 menu.setItem(8, createButt_class.createButt(Material.SLIME_BALL, "Подтвердить", "Нажми, чтобы подтвердить."));
