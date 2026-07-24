@@ -212,7 +212,7 @@ public class bank_menu_class implements Listener {
                 currentAccMenu = current_Acc_menu(event.getInventory(), true);
                 player.closeInventory();
                 player.openInventory(currentAccMenu);
-            }
+            }// asd
         }
     }
 }
